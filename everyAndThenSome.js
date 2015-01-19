@@ -41,9 +41,28 @@ function some(array, fn) {
   return result;
 }
 
+// another method to do this would be to use for in loops
+// we would then return in the middle of the loop once we found an element that would
+// cause the function to return early.
+// See the below alternate solution to some
+
+function some2(array, fn) {
+  for (var idx in array) {
+    // make sure we just run these against the array elements
+    if(array.hasOwnProperty(idx)) {
+      if (fn(array[idx]) === true) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 var assert = require('assert');
 
 assert.equal(every([NaN, NaN, NaN], isNaN), true, "every: failed test 1");
 assert.equal(every([NaN, NaN, 4], isNaN), false, "every: failed test 2");
 assert.equal(some([NaN, 3, 4], isNaN), true, "some: failed test 1");
 assert.equal(some([2, 3, 4], isNaN), false, "some: failed test 2");
+assert.equal(some2([NaN, 3, 4], isNaN), true, "some2: failed test 1");
+assert.equal(some2([2, 3, 4], isNaN), false, "some2: failed test 2");
